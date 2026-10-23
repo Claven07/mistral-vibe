@@ -15,6 +15,7 @@ mod session;
 mod subagents;
 mod turn;
 mod usage;
+mod warnings;
 
 use crate::cli::HeadlessOptions;
 use crate::headless_run::HeadlessRun;
@@ -71,6 +72,14 @@ pub async fn run(
     print_keyring_preflight();
 
     let report = drive::drive(&options, cwd, Connect::Spawn(launch), &stop).await;
+
+    if let Err(error) = warnings::write(
+        &options.output,
+        report.result.warnings.as_deref().unwrap_or_default(),
+        &mut std::io::stderr(),
+    ) {
+        tracing::warn!(%error, "Failed to print configuration warnings");
+    }
 
     // The final output is already written; say why the run did not finish.
     if let Some(ref error) = report.result.error {

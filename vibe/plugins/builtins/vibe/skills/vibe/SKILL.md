@@ -697,17 +697,18 @@ discriminated by `hook_event_name`:
 ```json
 // post_agent
 {"hook_event_name": "post_agent", "session_id": "...",
- "parent_session_id": null, "transcript_path": "...", "cwd": "..."}
+ "parent_session_id": null, "agent_type": null,
+ "transcript_path": "...", "cwd": "..."}
 
 // pre_tool
 {"hook_event_name": "pre_tool", "session_id": "...", "parent_session_id": null,
- "transcript_path": "...", "cwd": "...",
+ "agent_type": null, "transcript_path": "...", "cwd": "...",
  "tool_name": "file_system.bash", "tool_call_id": "call_42",
  "tool_input": {"command": "ls"}}
 
 // post_tool
 {"hook_event_name": "post_tool", "session_id": "...", "parent_session_id": null,
- "transcript_path": "...", "cwd": "...",
+ "agent_type": null, "transcript_path": "...", "cwd": "...",
  "tool_name": "file_system.bash", "tool_call_id": "call_42",
  "tool_input": {"command": "ls"},
  "tool_status": "success",         // success | failure; a non-zero exit code is still success
@@ -864,6 +865,9 @@ every skill the parent session has, unless its file sets `enabled_skills` or
 `disabled_skills`; these accept the same patterns as in `config.toml`.
 
 A custom subagent (`agent_type = "subagent"`) runs with the session's hooks.
+Unified Harness hook payloads carry its declared `agent_type`; generic children
+and root sessions carry null. Non-silent headless runs print sourced configuration
+issues, including oversized subagent instructions, on stderr after the run.
 Each of its tool calls must pass both the session's rules and its own
 `[tools.NAME]` rules (`permission`, `allowlist`, `denylist`): a profile can
 refuse or prompt for what the session allows, never allow what the session

@@ -263,6 +263,7 @@ def _base_payload(context: HookContext) -> dict[str, Any]:
         "transcript_path": str(context.session_root) if context.session_root else "",
         "cwd": str(context.config.workspace.cwd),
         "parent_session_id": context.parent_session_id,
+        "agent_type": context.config.subagent_type,
     }
 
 

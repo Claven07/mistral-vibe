@@ -409,6 +409,8 @@ class LocalRuntimeAdapterConfig:
         default_factory=HelperCrashCount, compare=False
     )
 
+    subagent_type: str | None = None
+
     def __post_init__(self) -> None:
         if (
             self.compaction_max_output_tokens is not None
@@ -588,6 +590,7 @@ _LOCAL_RUNTIME_ADAPTER_BEHAVIOR_FIELDS = frozenset({
     "thinking",
     "active_model",
     "active_agent",
+    "subagent_type",
     "compaction_model",
     "title_model",
     "title_prompt",

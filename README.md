@@ -163,6 +163,10 @@ The `task` tool allows the agent to delegate work to subagents:
 
 Create custom subagents by adding `agent_type = "subagent"` to your agent configuration. Vibe comes with a built-in subagent called `explore`, a read-only subagent for codebase exploration and skill loading used internally for delegation.
 
+Unified Harness hook payloads identify a declared child with `agent_type`.
+Non-silent headless runs print sourced configuration issues, including oversized
+subagent instructions, on stderr after the run.
+
 The interactive prompt shows each known subagent's name, type, live status, and
 latest measured context size. Opening a
 subagent also shows its active status above the prompt and its context use in the

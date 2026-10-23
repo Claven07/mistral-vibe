@@ -699,6 +699,9 @@ pattern starts with `re:` (`"re:(read_file|grep)"`). `match` is forbidden on
 
 Subagent invocations inherit the parent's hook config. Their hook events are
 logged to the subagent's session log and don't propagate to the parent's UI.
+Unified Harness hook payloads include `agent_type` for a declared child, or null
+for a generic child or root session.
+Non-silent headless runs print sourced configuration issues on stderr after the run.
 
 #### Wire protocol
 
@@ -708,17 +711,18 @@ discriminated by `hook_event_name`:
 ```json
 // post_agent
 {"hook_event_name": "post_agent", "session_id": "...",
- "parent_session_id": null, "transcript_path": "...", "cwd": "..."}
+ "parent_session_id": null, "agent_type": null,
+ "transcript_path": "...", "cwd": "..."}
 
 // pre_tool
 {"hook_event_name": "pre_tool", "session_id": "...", "parent_session_id": null,
- "transcript_path": "...", "cwd": "...",
+ "agent_type": null, "transcript_path": "...", "cwd": "...",
  "tool_name": "bash", "tool_call_id": "call_42",
  "tool_input": {"command": "ls"}}
 
 // post_tool
 {"hook_event_name": "post_tool", "session_id": "...", "parent_session_id": null,
- "transcript_path": "...", "cwd": "...",
+ "agent_type": null, "transcript_path": "...", "cwd": "...",
  "tool_name": "bash", "tool_call_id": "call_42",
  "tool_input": {"command": "ls"},
  "tool_status": "success",         // success | failure | cancelled

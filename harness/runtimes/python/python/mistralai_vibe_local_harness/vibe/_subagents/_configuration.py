@@ -109,7 +109,10 @@ def resolve_subagent_configuration(
         config, system_instructions=config.system_instructions
     )
     generic_adapter = replace(
-        adapter, env=dict(adapter.env), tool_modes=dict(adapter.tool_modes)
+        adapter,
+        env=dict(adapter.env),
+        tool_modes=dict(adapter.tool_modes),
+        subagent_type=None,
     )
     generic = LocalChildSessionBinding(
         template_digest=_binding_digest(
@@ -219,6 +222,7 @@ def _declared_binding(
     )
     child_adapter = replace(
         adapter,
+        subagent_type=profile.agent_type,
         env=dict(adapter.env),
         skills={
             name: content
